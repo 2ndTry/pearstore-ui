@@ -1,15 +1,51 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Navbar />
+  <router-view v-if="categories && products" style="min-height: 60vh"
+    :baseURL="baseURL"
+    :categories="categories"
+    :products="products"
+    @fetchData="fetchData"
+    >
+  </router-view>
+  <Footer />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components: { Navbar, Footer },
+  data() {
+    return {
+      baseURL: "http://localhost:8090/",
+      products: null,
+      categories: null
+    }
+  },
+  methods: {
+    async fetchData() {
+
+        //api call to get categories
+      await axios
+        .get(this.baseURL + "category/list/")
+        .then((res) => {
+          this.categories = res.data
+        })
+        .catch((err) => console.log('err', err))
+
+        //api call to get products
+      await axios
+        .get(this.baseURL + "products/")
+        .then((res) => {
+          this.products = res.data
+        })
+        .catch((err) => console.log('err', err))
+    }
+  },
+  mounted() {
+    this.fetchData()
   }
 }
 </script>
@@ -21,6 +57,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
