@@ -1,5 +1,5 @@
 <template>
-  <Navbar />
+  <Navbar :cardCount="cardCount" @resetCardCount="resetCardCount"/>
   <router-view v-if="categories && products" style="min-height: 60vh"
     :baseURL="baseURL"
     :categories="categories"
@@ -21,7 +21,8 @@ export default {
     return {
       baseURL: "http://localhost:8090/",
       products: null,
-      categories: null
+      categories: null,
+      cardCount: 0
     }
   },
   methods: {
@@ -42,33 +43,36 @@ export default {
           this.products = res.data
         })
         .catch((err) => console.log('err', err))
-    }
+
+      if (this.token) {
+        axios.get(`${this.baseURL}card/?token=${this.token}`)
+             .then((res) => {
+                const result = res.data;
+                this.cardCount = result.cardItemDtos.length;
+             })
+             .catch((err) => {
+              console.log("err", err)
+            })
+      } 
+    },
+    resetCardCount() {
+        this.cardCount = 0
+    } 
   },
   mounted() {
-    this.fetchData()
+    this.token = localStorage.getItem("token");
+    this.fetchData();
   }
 }
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

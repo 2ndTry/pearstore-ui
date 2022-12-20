@@ -10,6 +10,7 @@ import AddProduct from '../views/Product/AddProduct.vue'
 import EditProduct from '../views/Product/EditProduct.vue'
 import ProductDetails from '../views/Product/ProductDetails.vue'
 import ShowWishlist from '../views/Product/ShowWishlist.vue'
+import Card from "../views/Card.vue"
 import Signup from '../views/Signup.vue'
 import Signin from '../views/Signin.vue'
 
@@ -32,6 +33,11 @@ const routes = [
   },
   {
     path: '/admin/category',
+    name: 'AdminCategory',
+    component: Category
+  },
+  {
+    path: '/category',
     name: 'Category',
     component: Category
   },
@@ -48,6 +54,11 @@ const routes = [
   {
     path: '/admin/product',
     name: 'AdminProduct',
+    component: Product
+  },
+  {
+    path: '/product',
+    name: 'Product',
     component: Product
   },
   {
@@ -69,6 +80,11 @@ const routes = [
     path: '/wishlist',
     name: 'ShowWishlist',
     component: ShowWishlist
+  },
+  {
+    path: '/card',
+    name: 'Card',
+    component: Card
   },
   {
     path: '/signup',

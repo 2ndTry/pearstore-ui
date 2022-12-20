@@ -43,15 +43,30 @@
           </div>
         </div>
       </form>
-      <!-- <router-link :to="{ name: 'Admin' }"> Admin </router-link> -->
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarAccount" data-toggle="dropdown">Account</a>
+          <a class="nav-link text-light dropdown-toggle" href="#" id="navbarAccount" data-toggle="dropdown">Browse</a>
+          <div class="dropdown-menu" aria-labelledby="navbarAccount">
+            <router-link class="dropdown-item" :to="{ name : 'Home' }" style="color: black">Home</router-link>
+            <router-link class="dropdown-item" :to="{ name : 'Product' }" style="color: black">Product</router-link>
+            <router-link class="dropdown-item" :to="{ name : 'Category' }" style="color: black">Category</router-link>
+          </div>  
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link text-light dropdown-toggle" href="#" id="navbarAccount" data-toggle="dropdown">Account</a>
           <div class="dropdown-menu" aria-labelledby="navbarAccount">
             <router-link class="dropdown-item" v-if="token" :to="{ name : 'ShowWishlist' }" style="color: black">Wishlist</router-link>
             <router-link class="dropdown-item" v-if="!token" :to="{ name : 'Signup' }" style="color: black">Sign up</router-link>
             <router-link class="dropdown-item" v-if="!token" :to="{ name : 'Signin' }" style="color: black">Sign in</router-link>
             <a class="dropdown-item" v-if="token" href="#" @click="signout" style="color: black">Sign out</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div id="cart" style="position:relative">
+            <span v-if="cardCount !== 0" id="nav-cart-count">{{ cardCount }}</span>
+            <router-link class="text-light pl-2" :to="{name: 'Card'}">
+              <i class="fa fa-shopping-cart" style="font-size: 36px"></i>
+            </router-link>
           </div>
         </li>
       </ul>
@@ -65,6 +80,7 @@ import swal from 'sweetalert'
 
 export default {
   name: "Navbar",
+  props: ["cardCount"],
   data() {
     return {
       token: null
@@ -78,7 +94,8 @@ export default {
         text: 'Buy Buy. See you later =)',
         icon: 'success'
       })
-      this.$router.replace('/');
+      this.$emit("resetCardCount");
+      this.$router.push({name: "Home"})
     }
   },
   mounted() {
@@ -88,17 +105,35 @@ export default {
 </script>
 
 <style scoped>
+
 #logo {
   width: 150px;
   margin-left: 20px;
   margin-right: 20px;
 }
-
 a {
   color: white;
 }
 .nav-link {
   color: white;
+}
+#search-button-navbar {
+  background-color: white;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+#nav-cart-count {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+  margin-left: 10px;
 }
 
 </style>

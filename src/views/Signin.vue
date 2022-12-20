@@ -44,12 +44,13 @@ export default {
             }
             await axios.post(`${this.baseURL}user/signin`, body)
                        .then((res) => {
-                            this.$router.replace('/')
                             localStorage.setItem("token", res.data.token)
                             swal({
                                 text: 'User login seccessfully',
                                 icon: 'success'
                             })
+                            this.$emit("fetchData");
+                            this.$router.push({name: "Home"})
                        })
                        .catch((err) => {
                             console.log("err", err)

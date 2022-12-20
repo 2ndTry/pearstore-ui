@@ -4,7 +4,7 @@
             <div class="col-12 text-center">
                 <h3 class="pt-3">ALL PRODUCTS</h3>
                 <router-link :to="{name : 'AddProduct'}">
-                    <button class="btn" style="float:right">Add product</button>
+                    <button class="btn" style="float:right" v-show="$route.name == 'AdminProduct'">Add product</button>
                 </router-link>
             </div>
         </div>
